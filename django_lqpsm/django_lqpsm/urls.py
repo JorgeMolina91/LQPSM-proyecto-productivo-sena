@@ -20,14 +20,14 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="APIDocs Lo Que Pida SU-MERCED", # Titulo de mi proyecto
+      title="APIDocs Lo que Pida SU-MERCED", # Titulo de mi proyecto
       default_version='v1',
-      description="Documentación de la herramienta tecnológica del restaurante 'Lo que pida SU-MERCED'", # Descripción de mi proyecto
+      description="Documentación de la herramienta desarrollada para el restaurante 'Lo Que Pida SU-MERCED'", # Descripción de mi proyecto
       terms_of_service="",  #Una pagina donde tenga mis terminos y condiciones
       contact=openapi.Contact(email="admin@admin.com"),  #Mi email de contacto
       license=openapi.License(name="BSD License"),
    ),
-   public=True,
+   public=True,     
 )
 
 urlpatterns = [
