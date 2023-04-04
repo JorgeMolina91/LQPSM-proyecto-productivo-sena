@@ -1,11 +1,9 @@
 import React from 'react'
-import { Button } from 'semantic-ui-react'
+import { Navigation } from "./routers"
+
 
 export default function App(){
   return (
-    <div>
-      <h1>Hola Mundo!</h1>
-      <Button primary>Click oon me</Button>
-    </div>
+      <Navigation />
   )
 }
