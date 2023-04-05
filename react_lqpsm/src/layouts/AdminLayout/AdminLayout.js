@@ -1,12 +1,17 @@
-import React from 'react'
-import "./AdminLayout.scss"
+import React from 'react';
+import { LoginAdmin } from '../../pages/Admin' 
+import './AdminLayout.scss';
 
 export function AdminLayout(props) {
-    const { children } = props
+  const {children} = props;
+  const auth = null 
+
+  if(!auth) return <LoginAdmin /> 
+
   return (
     <div>
-      <p>Admin Layout</p>
-      { children }
+      <p>Admin Layout!</p>
+      {children}
     </div>
   )
 }
