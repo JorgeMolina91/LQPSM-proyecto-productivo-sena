@@ -4,7 +4,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import 'semantic-ui-css/semantic.min.css'
-import './scss/global.scss'
+import 'react-toastify/dist/ReactToastify.css' // Aqui se importan los estilos de toastify
+import './scss/global.scss' //Aqui se importa el archivo global para poder manipular mejor nuestros estilos
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
