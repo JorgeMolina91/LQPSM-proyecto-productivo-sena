@@ -10,6 +10,7 @@ import './LoginForm.scss'
 export function LoginForm() {
   const { login } = useAuth()  // Aqui se usa la funcion de login
 
+
   const formik = useFormik({
     initialValues: initialValues(), //Aqui se llama la funcion que evalua los valores iniciales
     validationSchema: Yup.object(validationSchema()), // Aqui se valida que se envia info. Si no se pone info da error

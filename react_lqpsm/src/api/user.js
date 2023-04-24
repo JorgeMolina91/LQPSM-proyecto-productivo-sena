@@ -31,10 +31,13 @@ export async function getMeApi(token) {
             headers: {
                 Authorization: `Bearer ${token}` //Asi es como e envia una peticion autorizada
             },
-        }
+        };
         const response = await fetch(url, params);
+
         const result = await response.json();
-        return result
+        console.log('result-->', result)
+        return result   
+        
     } catch (error) {
         throw error;
     }

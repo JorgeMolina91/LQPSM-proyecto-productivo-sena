@@ -1,5 +1,5 @@
-import React , { useState, useEffect, createContext } from "react";
-import { setToken } from "../api/token"
+import { useState, createContext, useEffect } from "react";
+import { setToken, getToken, removeToken } from "../api/token"
 import { useUser } from "../hooks"
 
 
@@ -12,23 +12,50 @@ export const AuthContext = createContext({
 
 export function AuthProvider(props){
     const { children } = props; // Recibe un children porque el AuthProvider va a estar envolviendo toda nuestra aplicacion, y va a renderizar nuestra aplicacion
+    const [auth, setAuth] = useState(undefined)
     const { getMe } = useUser();
 
+
+    useEffect(() => {
+        (async () => { // Funcion anonima autoejecutable anonima
+            const token = getToken(); // Aqui se obtiene el token
+            if (token){
+                const me = await getMe(token)
+                setAuth({token, me})
+            }else{
+                setAuth(null) //Borra el setAuth
+            }
+        })();
+    }, []);
+
+    
+
     const login = async (token) => { // Se usa async porque es una peticion http
-        setToken() //Se ejecuta la funcion importada de "../api/token"
-        const me = await getMe(token); //Se ejecuta la funcion importada de "../hooks"
-        console.log(me)
-    }
+        setToken(token)
+        //console.log(token)
+        const me = await getMe(token)
+        //console.log(me)
+        setAuth({token, me})
+    };
+
+    const logout = () =>{
+        if (auth){
+            removeToken();
+            setAuth(null);
+        }
+    };
 
     const valueContext = {
-        auth: null,
-        login, // Aqui se usa la funcion que se creo aqui arriba
-        logout: () => console.log('Cerrando Sesion')
-    }
+        auth,
+        login,
+        logout
+    };
+
+    if (auth === undefined) return null; //  Para evitar el 'flash' de la pagina de login cuando recargamos
 
     return (
-        <AuthContext.Provider value={valueContext}>
+        <AuthContext.Provider value={ valueContext }>
             { children }
         </AuthContext.Provider>
-    )
+    );
 }
