@@ -3,8 +3,8 @@ import { getMeApi } from "../api/user"
 export function useUser() {
     const getMe = async (token) => {
         try {//Aqui se llama a la funcion 'getMeApi()' del 'src/api/user.js'
-            const reponse = await getMeApi(token);
-            return reponse
+            const response = await getMeApi(token);
+            return response
         } catch (error) {
             throw error;
         }

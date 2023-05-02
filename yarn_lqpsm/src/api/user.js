@@ -17,7 +17,7 @@ export async function loginApi(formValue){
         }
 
         const result = await response.json();
-        return result
+        return result;
         
     } catch(error){
         throw error
@@ -29,16 +29,13 @@ export async function getMeApi(token) {
         const url = `${BASE_API}/api/auth/me/`;// Que sería la url desde donde se esta trayendo el metodo GET
         const params = {
             headers: {
-                Authorization: `Bearer ${token}` //Asi es como e envia una peticion autorizada
+                Authorization: `Bearer ${token}`, //Asi es como se envia una peticion autorizada
             },
-        };
+        }
         const response = await fetch(url, params);
-
         const result = await response.json();
-        console.log('result-->', result)
-        return result   
-        
-    } catch (error) {
+        return result;       
+    } 
+    catch (error) {
         throw error;
-    }
-}
+    }}  

@@ -6,7 +6,7 @@ export function HomeAdmin() {
   return (
     <div>
     <h1>Home Admin</h1>
-    <button onClick={logout}>Cerrar Sesion</button> 
+    <button onClick={ logout }>Cerrar Sesion</button> 
     </div>
   )
 }
