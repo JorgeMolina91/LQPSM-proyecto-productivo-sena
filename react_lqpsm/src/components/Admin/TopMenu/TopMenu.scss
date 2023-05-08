@@ -1,0 +1,10 @@
+.top-menu-admin{
+    &__logo{
+        width: 250px; // Este es el ancho que ocupara el menu lateral izquierdo
+        background-color: #c4c4c4 !important; // Aqui va el color de la barra superior izquierda, es decir, donde va el logo o nombre
+    }
+
+    i.icon{
+        margin: 0 !important; 
+    }
+}

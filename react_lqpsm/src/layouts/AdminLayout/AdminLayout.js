@@ -1,6 +1,6 @@
 import React from 'react';
 import { LoginAdmin } from '../../pages/Admin' 
-import { TopMenu } from "../../components/Admin"
+import { TopMenu, SideMenu } from "../../components/Admin" // Aqui se importan los menus
 import { useAuth } from "../../hooks"
 import './AdminLayout.scss';
 
@@ -13,10 +13,10 @@ export function AdminLayout(props) {
   return (
     <div className="admin-layout">
       <div className='admin-layout__menu'>
-        <TopMenu />
+        <TopMenu /> {/* Aqui se pone el TopMenu que se esta importando */}
       </div>
       <div className='admin-layout__main-content'>
-        {children}
+        <SideMenu>{children}</SideMenu> {/* Aqui se pone el SideMenu que se esta importando */}
       </div>
     </div>
   )
