@@ -2,19 +2,30 @@ import React from 'react'
 import { Form, Button, Checkbox } from "semantic-ui-react"
 import { useFormik } from "formik"
 import * as Yup from "yup"
+import { useUser } from '../../../../hooks'
 import './AddEditUsersForm.scss'
-import { initial } from 'lodash'
 
-export function AddEditUsersForm() {
+export function AddEditUsersForm(props) {
+    const {onClose, onRefetch, user} = props
+
+    const {addUser, updateUser} = useUser()
+
+
     const formik = useFormik({
-        initialValues: initialValues(),
-        validationSchema: Yup.object(newSchema()),
+        initialValues: initialValues(user),
+        validationSchema: Yup.object(user ? updateSchema() : newSchema()),
         validateOnChange: false,
-        onSubmit: (formValue) => {
-            console.log('Formulario Enviado')
-            console.log(formValue)
+        onSubmit: async (formValue) => { //Para que valide cuando se de click en el boton de enviar y no antes
+            try {
+                if(user) updateUser(user.id, formValue)
+                else await addUser(formValue)
+                onRefetch()
+                onClose()
+            } catch (error) {
+                console.error(error)
+            }
         }
-    })
+    })  
   return (
     <Form className='add-edit-user-form' onSubmit={formik.handleSubmit}>
         <Form.Input 
@@ -68,20 +79,20 @@ export function AddEditUsersForm() {
             /> Usuario Administrador
         </div>
 
-        <Button type='submit' primary fluid content='Crear' />
+        <Button type='submit' primary fluid content={user ? 'Actualizar' : 'Crear'} />
     </Form>
   )
 }
 
-function initialValues(){
+function initialValues(data){
     return{
-        username: '',
-        email: '',
-        first_name: '',
-        last_name: '',
+        username: data?.username || '',
+        email: data?.email || '',
+        first_name: data?.first_name || '',
+        last_name:data?.last_name || '',
         password: '',
-        is_active: true,
-        is_staff: false,
+        is_active: data?.is_active ? true : false,
+        is_staff: data?.is_staff ? true : false
 
     }
 }
@@ -93,6 +104,18 @@ function newSchema(){
         first_name: Yup.string(),
         last_name: Yup.string(),
         password: Yup.string().required(true),
+        is_active: Yup.bool().required(true),
+        is_staff: Yup.bool().required(true),
+    }
+}
+
+function updateSchema(){
+    return{
+        username: Yup.string().required(true),
+        email: Yup.string().email(true).required(true),
+        first_name: Yup.string(),
+        last_name: Yup.string(),
+        password: Yup.string(),
         is_active: Yup.bool().required(true),
         is_staff: Yup.bool().required(true),
     }

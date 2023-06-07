@@ -5,23 +5,54 @@ import {
   TableUsers, 
   AddEditUsersForm 
 } from "../../components/Admin"
-import { ModalBasic } from "../../components/Common"
+import { ModalBasic } from "../../components/Common" 
 import { useUser } from '../../hooks'
 
 export function UsersAdmin() {  
   const [showModal, setShowModal] = useState(false)
   const [titleModal, setTitleModal] = useState(null)
   const [contentModal, setContentModal] = useState(null)
-  const { loading, users, getUsers } = useUser()
+  const [refetch, setRefetch] = useState(false)
+  const { loading, users, getUsers, deleteUser } = useUser()
   
-  useEffect(() => getUsers(), []) 
+  useEffect(() => {
+    getUsers();
+  }, [refetch]);
+   
 
   const openCloseModal = () => setShowModal((prev) => !prev)
 
+  const onRefetch = () => setRefetch((prev) => !prev)
+
   const addUser = () => {
     setTitleModal('Nuevo Usuario')
-    setContentModal(<AddEditUsersForm />)
+    setContentModal(<AddEditUsersForm onClose = {openCloseModal} onRefetch={onRefetch}/>)
     openCloseModal()
+  }
+
+  const updateUser = (data) => {
+    setTitleModal('Actualizar Usuario')
+    setContentModal(
+      <AddEditUsersForm 
+        onClose = {openCloseModal} 
+        onRefetch={onRefetch} 
+        user={data}
+      />
+    )
+    openCloseModal()
+  }
+
+  const onDeleteUser = async (data) => {
+    const result = window.confirm(`¿Eliminar usuario ${data.email}?`)
+
+    if (result){
+      try {
+        await deleteUser(data.id)
+        onRefetch()
+      } catch (error) {
+        console.error(error)
+      }
+    }
   }
 
   return (
@@ -35,7 +66,11 @@ export function UsersAdmin() {
           Cargando ...
         </Loader>
       ) : ( // Estos ':' es como el 'else' de la comprobacion
-        <TableUsers users = { users }/> // Aqui se renderiza la lista de usuarios
+        <TableUsers 
+          users = { users } 
+          updateUser = { updateUser } 
+          onDeleteUser={ onDeleteUser }
+        /> // Aqui se renderiza la lista de usuarios
       )}
 
       <ModalBasic 

@@ -1,5 +1,5 @@
 import { useState } from "react" // Importamos useState
-import { getMeApi, getUsersApi } from "../api/user" // Importamos la función getUsersApi() que acabamos de crear
+import { getMeApi, getUsersApi, addUserApi, updateUserApi, deleteUserApi } from "../api/user" // Importamos las peticiones a la API
 import { useAuth } from "." // Importamos useAuth para el token
  
 export function useUser() {
@@ -29,11 +29,47 @@ export function useUser() {
         }
     }
 
+    const addUser = async (data) => {
+        try {
+            setLoading(true);
+            await addUserApi(data, auth.token);
+            setLoading(false)
+        } catch (error) {
+            setLoading(false);
+            setError(error)
+        }
+    }
+
+    const updateUser = async (id, data) => {
+        try {
+            setLoading(true)
+            await updateUserApi(id, data, auth.token)
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            setError(error)
+        }
+    }
+
+    const deleteUser = async (id) => {
+        try {
+            setLoading(true)
+            await deleteUserApi(id, auth.token)
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            setError(error)
+        }
+    }
+
     return { // Aqui se exportan las funciones que se van creando
         loading, 
         error,
         users,
         getMe,
         getUsers,
+        addUser, 
+        updateUser,
+        deleteUser,
     }
 }
