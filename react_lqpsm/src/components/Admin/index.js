@@ -4,3 +4,4 @@ export * from './SideMenu'
 export * from './TopMenu'
 
 export * from './Users'
+export * from './Category'
