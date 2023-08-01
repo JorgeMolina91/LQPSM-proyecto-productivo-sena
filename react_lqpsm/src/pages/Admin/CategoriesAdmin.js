@@ -5,22 +5,46 @@ import { ModalBasic } from '../../components/Common'
 import { useCategory } from '../../hooks'
 
 export function CategoriesAdmin() {
-  const [showModal, setShowModal] = useState(false)
-  const [titleModal, setTitleModal] = useState(null)
-  const [contentModal, setContentModal] = useState(null)
-
-  const { loading, categories, getCategories } = useCategory()
+  const [showModal, setShowModal] = useState(false);
+  const [titleModal, setTitleModal] = useState(null);
+  const [contentModal, setContentModal] = useState(null);
+  const [refetch, setRefetch] = useState(false); // Se crea el refetch para que se actualice la pagina una vez se suba una nueva categoria
+  const { loading, categories, getCategories, deleteCategory } = useCategory();
   
   useEffect(() => {
     getCategories()
-  }, [])
+  }, [refetch]) // Aqui se pasa el refetch
 
   const openCloseModal = () => setShowModal (prev => !prev) //Para abrir o cerrar el modal
+  const onRefetch = () => setRefetch((prev) => !prev) // La funcion refetch
 
   const addCategory = () => {
-    setTitleModal('Nueva Categoria')
-    setContentModal(<AddEditCategoryForm />)
+    setTitleModal("Nueva categoria");
+    setContentModal(
+			<AddEditCategoryForm 
+			onClose={openCloseModal} 
+			onRefetch={onRefetch} />
+		)
     openCloseModal()
+  };
+
+  const updateCategory = (data) => {
+    setTitleModal("Actualizar categoria")
+    setContentModal(
+      <AddEditCategoryForm 
+			onClose={openCloseModal} 
+			onRefetch={onRefetch} 
+      category={data}/>
+    )
+    openCloseModal()
+  }
+
+  const onDeleteCategory = async (data) => {
+    const result = window.confirm(`Eliminar categoria ${data.title}?`)
+    if(result){
+      await deleteCategory(data.id)
+      onRefetch()
+    }
   }
 
   return (
@@ -37,6 +61,8 @@ export function CategoriesAdmin() {
         ): (
           <TableCategoryAdmin
             categories = {categories}
+            updateCategory = {updateCategory}
+            deleteCategory = {onDeleteCategory}
           />
         )}
 

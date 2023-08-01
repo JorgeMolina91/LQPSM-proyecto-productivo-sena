@@ -1,12 +1,12 @@
 import React from 'react'
 import { Modal } from "semantic-ui-react"
 import "./ModalBasis.scss"
-import { size } from 'lodash'
+
 
 export function ModalBasic(props) {
     const { show, size, title, children, onClose } = props
   return (
-    <Modal 
+    <Modal
         className='modal-basic' 
         open={show} 
         onClose={onClose} 
