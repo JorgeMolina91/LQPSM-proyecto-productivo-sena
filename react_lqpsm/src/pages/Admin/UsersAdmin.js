@@ -1,83 +1,84 @@
-import React, { useState, useEffect } from 'react'
-import { Loader } from "semantic-ui-react"
-import { 
-  HeaderPage, 
-  TableUsers, 
-  AddEditUsersForm 
-} from "../../components/Admin"
-import { ModalBasic } from "../../components/Common" 
-import { useUser } from '../../hooks'
+import React, { useState, useEffect } from "react";
+import { Loader } from "semantic-ui-react";
+import {
+  HeaderPage,
+  TableUsers,
+  AddEditUsersForm,
+} from "../../components/Admin";
+import { ModalBasic } from "../../components/Common";
+import { useUser } from "../../hooks";
 
-export function UsersAdmin() {  
-  const [showModal, setShowModal] = useState(false)
-  const [titleModal, setTitleModal] = useState(null)
-  const [contentModal, setContentModal] = useState(null)
-  const [refetch, setRefetch] = useState(false)
-  const { loading, users, getUsers, deleteUser } = useUser()
-  
-  useEffect(() => {
-    getUsers();
+export function UsersAdmin() {
+  const [showModal, setShowModal] = useState(false);
+  const [titleModal, setTitleModal] = useState(null);
+  const [contentModal, setContentModal] = useState(null);
+  const [refetch, setRefetch] = useState(false);
+  const { loading, users, getUsers, deleteUser } = useUser();
+
+  useEffect(() =>{
+     getUsers()
   }, [refetch]);
-   
 
-  const openCloseModal = () => setShowModal((prev) => !prev)
-
-  const onRefetch = () => setRefetch((prev) => !prev)
+  const openCloseModal = () => setShowModal((prev) => !prev);
+  const onRefetch = () => setRefetch((prev) => !prev);
 
   const addUser = () => {
-    setTitleModal('Nuevo Usuario')
-    setContentModal(<AddEditUsersForm onClose = {openCloseModal} onRefetch={onRefetch}/>)
-    openCloseModal()
-  }
+    setTitleModal("Nuevo usuario");
+    setContentModal(
+      <AddEditUsersForm onClose={openCloseModal} onRefetch={onRefetch} />
+    );
+    openCloseModal();
+  };
 
   const updateUser = (data) => {
-    setTitleModal('Actualizar Usuario')
+    setTitleModal("Actualizar usuario");
     setContentModal(
-      <AddEditUsersForm 
-        onClose = {openCloseModal} 
-        onRefetch={onRefetch} 
+      <AddEditUsersForm
+        onClose={openCloseModal}
+        onRefetch={onRefetch}
         user={data}
       />
-    )
-    openCloseModal()
-  }
+    );
+    openCloseModal();
+  };
 
   const onDeleteUser = async (data) => {
-    const result = window.confirm(`¿Eliminar usuario ${data.email}?`)
-
-    if (result){
+    const result = window.confirm(`¿Eliminar usuario ${data.email}?`);
+    if (result) {
       try {
-        await deleteUser(data.id)
-        onRefetch()
+        await deleteUser(data.id);
+        onRefetch();
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     }
-  }
+  };
 
   return (
     <>
-      <HeaderPage 
-        title='Usuarios'  
-        btnTitle='Nuevo Usuario' 
-        btnClick={addUser}/>
-      {loading ? ( // Aqui se comprueba si está cargando o no la página
-        <Loader active inline='centered'>
-          Cargando ...
+      <HeaderPage
+        title="Usuarios"
+        btnTitle="Nuevo usuario"
+        btnClick={addUser}
+      />
+      {loading ? (
+        <Loader active inline="centered">
+          Cargando...
         </Loader>
-      ) : ( // Estos ':' es como el 'else' de la comprobacion
-        <TableUsers 
-          users = { users } 
-          updateUser = { updateUser } 
-          onDeleteUser={ onDeleteUser }
-        /> // Aqui se renderiza la lista de usuarios
+      ) : (
+        <TableUsers
+          users={users}
+          updateUser={updateUser}
+          onDeleteUser={onDeleteUser}
+        />
       )}
 
-      <ModalBasic 
-        show={showModal} 
+      <ModalBasic
+        show={showModal}
         onClose={openCloseModal}
         title={titleModal}
-        children={contentModal}/>
+        children={contentModal}
+      />
     </>
   );
 }
