@@ -42,6 +42,48 @@ Para configurar el entorno de desarrollo del front-end con React, asegúrese de 
 8. Agregar react-toastify para notificaciones: `yarn add react-toastify`
 
 9. Agregar classnames para manejo de clases CSS: `yarn add classnames`
+
+
+# Guía de Despliegue Local con Docker  
+
+Esta guía permitirá desplegar la aplicación en un entorno local utilizando Docker: el front-end con React, y el back-end con Django.  
+Para hacerlo, **dedemos asegurarnos de tener Docker instalado en nuestro sistema.**
+
+## Paso 1: Clonar el Repositorio  
+1. Abre tu terminal y navega a la ubicación donde deseas clonar el repositorio.
+2. Ejecuta el siguiente comando para clonar el repositorio: `git clone <URL-del-repositorio>`
+
+## Paso 2: Desplegar la Aplicación React
+### 2.1. Construir la Imagen Docker
+1. Navega al directorio de la aplicación React: `cd 'react-app'`
+2. Ejecuta el siguiente comando para construir la imagen de Docker: `docker build -t 'react-app' .`
+
+### 2.2. Ejecutar la Aplicación React
+1. Ejecuta el siguiente comando para iniciar la aplicación React en un contenedor: `docker run -d -p 3000:3000 'react-app'`
+
+Ahora puedes acceder a la aplicación React en tu navegador web en **http://localhost:3000.**
+
+## Paso 3: Desplegar la Aplicación Django
+### 3.1. Construir la Imagen Docker  
+1. Navega al directorio de la aplicación Django: `cd ../'django-app'`
+2. Ejecuta el siguiente comando para construir la imagen de Docker: `docker build -t 'django-app' .`
+### 3.2. Ejecutar la Aplicación Django  
+1. Ejecuta el siguiente comando para iniciar la aplicación Django en un contenedor: `docker run -d -p 8000:8000 'django-app'`
+   
+La aplicación Django estará disponible en **http://localhost:8000.**
+
+¡Listo! Ahora tienes ambas aplicaciones desplegadas en contenedores Docker en tu entorno local.
+
+## Detener y Limpiar
+Si deseas detener y eliminar los contenedores Docker, puedes usar los siguientes comandos:  
+`docker stop $(docker ps -aq)`  
+`docker rm $(docker ps -aq)`  
+
+## Notas Adicionales
+- Asegúrate de que los puertos especificados en los comandos de ejecución (-p puerto-host:puerto-contenedor) no estén en uso por otras aplicaciones en tu sistema.  
+- Si necesitas realizar ajustes de configuración específicos para cada aplicación (como variables de entorno), consulta la documentación de las aplicaciones React y Django.  
+- Recuerda que esta guía asume que las imágenes de Docker se han construido correctamente y que las aplicaciones tienen sus archivos y dependencias en los lugares adecuados.
+
     
 
 ## Contribución
